@@ -17,9 +17,15 @@
             <h3 class="text-black bold font-sans">{{ user.username }}</h3>
             {% if request.user.is_authenticated %}
                 {% if request.user != user %}
-                    <button type="button" class="bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center js-follow" data-username="{{ user.username }}">
+                    <button type="button" class="bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center js-follow" data-username="{{ user.username }}" data-action="{% if you_follow %}un{% endif %}" data-url="{% url 'profiles:follow' user.username %}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M4.5 8.552c0 1.995 1.505 3.5 3.5 3.5s3.5-1.505 3.5-3.5-1.505-3.5-3.5-3.5-3.5 1.505-3.5 3.5zM19 8h-2v3h-3v2h3v3h2v-3h3v-2h-3zM4 19h10v-1c0-2.757-2.243-5-5-5H7c-2.757 0-5 2.243-5 5v1h2z"></path></svg>
-                        <span class="mr-2 js-follow-text"> Follow</span>
+                        <span class="mr-2 js-follow-text">
+                            {% if you_follow%}
+                                Unfollow
+                            {% else %}
+                                Unfollow
+                            {% endif %}
+                        </span>
                     </button>
                 {% endif %}
             {% else %}
