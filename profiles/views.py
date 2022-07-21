@@ -6,8 +6,9 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from feed.models import Post
 from followers.models import Follower
 
+
 class ProfileDetailView(DetailView):
-    http_method_names = ['get']
+    http_method_names = ["get"]
     template_name = "profiles/detail.html"
     model = User
     context_object_name = "user"
@@ -22,10 +23,11 @@ class ProfileDetailView(DetailView):
         user = self.get_object()
         context = super().get_context_data(**kwargs)
         context['total_posts'] = Post.objects.filter(author=user).count()
-
+        context['total_followers'] = Follower.objects.filter(followed_by=self.request.user).count()
         if self.request.user.is_authenticated:
             context['you_follow'] = Follower.objects.filter(following=user, followed_by=self.request.user).exists()
-        return context 
+        return context
+
 
 class FollowView(LoginRequiredMixin, View):
     http_method_names = ["post"]
@@ -35,23 +37,23 @@ class FollowView(LoginRequiredMixin, View):
 
         if "action" not in data or "username" not in data:
             return HttpResponseBadRequest("Missing data")
-        
+
         try:
             other_user = User.objects.get(username=data['username'])
         except User.DoesNotExist:
             return HttpResponseBadRequest("Missing user")
 
         if data['action'] == "follow":
-            #Follow
+            # Follow
             follower, created = Follower.objects.get_or_create(
                 followed_by=request.user,
-                following=other_user,
+                following=other_user
             )
         else:
-            #Unfollow
-            try:  
+            # Unfollow
+            try:
                 follower = Follower.objects.get(
-                    followed_by = request.user,
+                    followed_by=request.user,
                     following=other_user,
                 )
             except Follower.DoesNotExist:

@@ -30,10 +30,8 @@ $.ajaxSetup({
 
 $(document).on("click", ".js-toggle-modal", function (e) {
     e.preventDefault()
-
     $(".js-modal").toggleClass("hidden")
 })
-
     .on("click", ".js-submit", function (e) {
         e.preventDefault()
         const text = $(".js-post-text").val().trim()
@@ -58,7 +56,7 @@ $(document).on("click", ".js-toggle-modal", function (e) {
             },
             error: (error) => {
                 console.warn(error)
-                $btn.prop("disabled", false).text("Error")
+                $btn.prop("disabled", false).text("Error");
             }
         });
     })
@@ -76,16 +74,17 @@ $(document).on("click", ".js-toggle-modal", function (e) {
             success: (data) => {
                 $(".js-follow-text").text(data.wording)
                 if (action == "follow") {
-                    // Changing wording to 'Unfollow'
+                    // Change wording to unfollow
+                    console.log("DEBUG", "unfollow")
                     $(this).attr("data-action", "unfollow")
                 } else {
-                    // The oposite
+                    // The opposite
+                    console.log("DEBUG", "follow")
                     $(this).attr("data-action", "follow")
                 }
             },
             error: (error) => {
                 console.warn(error)
-
             }
         });
     })
